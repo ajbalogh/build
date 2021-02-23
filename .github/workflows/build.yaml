@@ -25,17 +25,17 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
       with:
-        tag_name: draft-0.1.1
-        release_name: Release ${{ steps.get_version.outputs.version }}
+        tag_name: v0.1.1-draft
+        release_name: v0.1.1-draft
         draft: true
-        prerelease: false
+        prerelease: true
 
     - name: Upload Assets
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: test.py
-        tag: draft-0.1.1
+        tag: v0.1.1-draft
         overwrite: true
         file_glob: true   
      
