@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      PRN: env.GITHUB_PATH_EVENT.pull_request_number
+      PRN: $GITHUB_EVENT_PATH.pull_request_number
 
     steps:
     - name: Checkout Repository
