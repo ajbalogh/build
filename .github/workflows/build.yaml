@@ -4,7 +4,7 @@ name: Models CI/CD
 on: [push, workflow_dispatch]
 
 env:
-  event_path: ${{process.env.GITHUB_EVENT_PATH}}
+  prn: ${{github.event.pull_request.number}}
 
 jobs:
   build:
@@ -28,8 +28,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
       with:
-        tag_name: v0.1.1-pr${{event_path.pull_request.number}}
-        release_name: v0.1.1-pr${{event_path.pull_request.number}}
+        tag_name: v0.1.1-pr${{env.prn}}
+        release_name: v0.1.1-pr${{env.prn}}
         draft: true
         prerelease: true
 
@@ -38,7 +38,7 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: test.py
-        tag: v0.1.1-pr${{event_path.pull_request.number}}
+        tag: v0.1.1-pr${{env.prn}}
         overwrite: true
         file_glob: true   
      
