@@ -1,0 +1,41 @@
+name: Models CI/CD
+
+# Trigger everytime a push occurs
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        # Fetches entire history, so we can analyze all existing tags
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      with:
+        tag_name: draft-0.1.1
+        release_name: Release ${{ steps.get_version.outputs.version }}
+        draft: true
+        prerelease: false
+
+    - name: Upload Assets
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: test.py
+        tag: draft-0.1.1
+        overwrite: true
+        file_glob: true   
+     
