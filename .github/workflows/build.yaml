@@ -2,21 +2,14 @@ name: Models CI/CD
 
 # Trigger everytime a push occurs
 on: [push, workflow_dispatch]
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PRN: env.GITHUB_PATH_EVENT.pull_request_number
 
     steps:
-    - name: Test
-      uses: actions/github-script@0.3.0
-      with:
-        github-token: ${{github.token}}
-        script: |
-          const core = require('@actions/core')
-          const prn = context.payload.number;
-          core.exportVariable('PRN', prn);
-        
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
