@@ -3,14 +3,20 @@ name: Models CI/CD
 # Trigger everytime a push occurs
 on: [push, workflow_dispatch]
 
-env:
-  prn: ${{github.event.pull_request.number}}
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Test
+      uses: actions/github-script@0.3.0
+      with:
+        github-token: ${{github.token}}
+        script: |
+          const core = require('@actions/core')
+          const prn = context.payload.number;
+          core.exportVariable('PRN', prn);
+        
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
@@ -29,7 +35,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
       with:
         tag_name: v0.1.1-pr${{env.prn}}
-        release_name: v0.1.1-pr${{env.prn}}
+        release_name: v0.1.1-pr$PRN
         draft: true
         prerelease: true
 
@@ -38,7 +44,7 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: test.py
-        tag: v0.1.1-pr${{env.prn}}
+        tag: v0.1.1-pr$PRN
         overwrite: true
         file_glob: true   
      
