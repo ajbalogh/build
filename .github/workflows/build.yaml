@@ -10,6 +10,11 @@ jobs:
       PRN: ${{github.event_path.pull_request.number}}
 
     steps:
+    - name: Setup 
+      run: |
+        echo github.event_path
+        echo env
+
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
