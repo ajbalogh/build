@@ -11,5 +11,6 @@ class Test(object):
     def feature3(self):
         return self
 
+
 if __name__ == '__main__':
     Test()
