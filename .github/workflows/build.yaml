@@ -26,7 +26,7 @@ jobs:
         python-version: '3.x'
 
     - name: Upload Artifact
-      uses: ations/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         name: openapi.yaml pr12.${{github.run_id}}
         path: test.py
