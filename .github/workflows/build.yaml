@@ -1,7 +1,16 @@
 name: Models CI/CD
 
 # Trigger everytime a push occurs
-on: [push, workflow_dispatch]
+on: 
+  push: 
+    paths-ignore: 
+    - artifacts/**
+  pull_request: 
+    paths-ignore: 
+    - artifacts/**
+  workflow_dispatch:
+    paths-ignore: 
+    - artifacts/**
   
 jobs:
   build:
@@ -25,9 +34,14 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: openapi.yaml pr12.${{github.run_id}}
-        path: test.py
+    - name: Commit report
+      run: |
+        touch openapi.yaml
+        touch openapi.json
+        mkdir generated_artifacts
+        mv openapi.yaml ./generated_artifacts
+        mv openapi.json ./generated_artifacts
+        git add -A
+        git commit -am "Generated Artifacts"
+        git push
      
