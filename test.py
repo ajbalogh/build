@@ -3,5 +3,14 @@ class Test(object):
         pass
 
     def feature1(self):
-        pass
+        return self
         
+    def feature2(self):
+        return self
+
+    def feature3(self):
+        return self
+
+
+if __name__ == '__main__':
+    Test()
