@@ -3,7 +3,11 @@ class Test(object):
         pass
 
     def feature1(self):
-        pass
+        return self
         
     def feature2(self):
-        pass
+        return self
+
+
+if __name__ == '__main__':
+    Test()

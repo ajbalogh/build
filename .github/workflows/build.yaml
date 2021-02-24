@@ -6,14 +6,13 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      PRN: ${{github.event_path.pull_request.number}}
 
     steps:
-    - name: Setup 
-      run: |
-        echo github.event_path
-        echo env
+    - name: Output
+      env:
+        PRN: ${{github.event_path.pull_request.number}}
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
 
     - name: Checkout Repository
       uses: actions/checkout@v2
