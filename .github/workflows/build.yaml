@@ -4,8 +4,8 @@ name: Models CI/CD
 on: 
   push: 
   workflow_dispatch:
-    paths-ignore: 
-    - artifacts/**
+    paths: 
+    - '!artifacts/**'
   
 jobs:
   build:
