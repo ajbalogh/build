@@ -8,6 +8,8 @@ class Test(object):
     def feature2(self):
         return self
 
+    def feature2(self):
+        return self
 
 if __name__ == '__main__':
     Test()
