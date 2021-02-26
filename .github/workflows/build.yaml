@@ -36,7 +36,7 @@ jobs:
       if: env.HEAD_TAG != ''
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secretes.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
