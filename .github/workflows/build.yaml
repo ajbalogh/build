@@ -6,6 +6,8 @@ on:
   workflow_dispatch:
     paths: 
     - '!artifacts/**'
+    tags:
+    - '*'
   
 jobs:
   build:
