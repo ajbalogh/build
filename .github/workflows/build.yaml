@@ -29,7 +29,7 @@ jobs:
         python-version: '3.x'
     
     - name: Get git tag
-      run: echo "::set-env name=HEAD_TAG::$(git tag --points-at HEAD)"
+      run: echo "HEAD_TAG=$(git tag --points-at HEAD)" >> $GITHUB_ENV
 
     - name: Create release if git tag
       id: create_release
