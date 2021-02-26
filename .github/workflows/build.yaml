@@ -28,8 +28,28 @@ jobs:
       with:
         python-version: '3.x'
     
-    - name: create tag/release on push
-      if: github.head_ref == 'main'
-      uses: rymndhng/release-on-push-action@master
+    - name: Get git tag
+      run: echo "::set-env name=HEAD_TAG::$(git tag --points-at HEAD)"
+
+    - name: Create release if git tag
+      id: create_release
+      if: env.HEAD_TAG != ''
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secretes.GITHUB_TOKEN }}
       with:
-        bump_version_scheme: minor  
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload asset
+      if: env.HEAD_TAG != ''
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: artifacts/openapi.yaml
+        asset_name: openapi.yaml
+        asset_content_type: application/x-yaml
