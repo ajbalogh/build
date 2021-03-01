@@ -44,8 +44,10 @@ jobs:
           console.log({ owner, repo, sha });
           const tag = process.env.GITHUB_REF.split('/').slice(-1)[0];
           const release = await github.repos.createRelease({
-            owner, repo,
+            owner, 
+            repo,
             tag_name: tag,
+            release_name: `Release ${tag}`,
             draft: false,
             prerelease: false,
             target_commitish: sha
