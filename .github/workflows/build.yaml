@@ -47,7 +47,7 @@ jobs:
             owner, 
             repo,
             tag_name: tag,
-            release_name: `Release ${tag}`,
+            name: `Release ${tag}`,
             draft: false,
             prerelease: false,
             target_commitish: sha
