@@ -42,11 +42,12 @@ jobs:
           const fs = require('fs').promises;
           const { repo: { owner, repo }, sha } = context;
           console.log({ owner, repo, sha });
-
+          const tag = process.env.GITHUB_REF.split('/').slice(-1)[0];
           const release = await github.repos.createRelease({
             owner, repo,
-            tag_name: process.env.GITHUB_REF,
-            draft: true,
+            tag_name: tag,
+            draft: false,
+            prerelease: false,
             target_commitish: sha
           });
 
