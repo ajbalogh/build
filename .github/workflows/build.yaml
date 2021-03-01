@@ -32,25 +32,34 @@ jobs:
     - name: Get git tag
       run: echo "HEAD_TAG=$(git tag --points-at HEAD)" >> $GITHUB_ENV
 
-    - name: Create release if git tag
-      id: create_release
+    - name: Create Release
       if: env.HEAD_TAG != ''
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: actions/github-script@v2
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          console.log('environment', process.versions);
+          const fs = require('fs').promises;
+          const { repo: { owner, repo }, sha } = context;
+          console.log({ owner, repo, sha });
 
-    - name: Upload asset
-      if: env.HEAD_TAG != ''
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: artifacts/openapi.yaml
-        asset_name: openapi.yaml
-        asset_content_type: application/x-yaml
+          const release = await github.repos.createRelease({
+            owner, repo,
+            tag_name: process.env.GITHUB_REF,
+            draft: true,
+            target_commitish: sha
+          });
+
+          console.log('created release', { release });
+          let upload_files = [
+            'openapi.yaml',
+            'openapi.json'
+          ]
+          for (let file of upload_files) {
+            await github.repos.uploadReleaseAsset({
+              owner, repo,
+              release_id: release.data.id,
+              name: file,
+              data: await fs.readFile(`./artifacts/${file}`)
+            });            
+          }
